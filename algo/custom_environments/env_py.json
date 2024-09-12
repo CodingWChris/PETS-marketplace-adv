@@ -1,0 +1,9 @@
+{
+  "algorithm": {
+    "container": {
+      "entrypoint": "python3.6 $ALGO",
+      "image": "oceanprotocol/algo_dockers",
+      "tag": "python-sql"
+    }
+  }
+}

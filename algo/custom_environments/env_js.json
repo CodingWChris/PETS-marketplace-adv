@@ -1,0 +1,9 @@
+{
+    "algorithm": {
+        "container": {
+        "entrypoint": "node $ALGO",
+        "image": "node",
+        "tag": "14"
+        }
+    }
+}
