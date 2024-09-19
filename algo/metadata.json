@@ -1,0 +1,20 @@
+{ 
+  "metadata": { 
+    "created": "2020-11-15T12:27:48Z", 
+    "updated": "2021-05-17T21:58:02Z", 
+    "description": "Sample description", 
+    "name": "Sample algorithm asset", 
+    "type": "algorithm", 
+    "author": "OPF", 
+    "license": "https://market.oceanprotocol.com/terms", 
+    "algorithm": { "language": "Node.js", "version": "1.0.0", 
+      "container": { 
+        "entrypoint": "node $ALGO", 
+        "image": "ubuntu", 
+        "tag": "latest", 
+        "checksum": "sha256:44e10daa6637893f4276bb8d7301eb35306ece50f61ca34dcab550" 
+        }, 
+        "consumerParameters": {} 
+        } 
+  } 
+} 
