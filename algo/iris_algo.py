@@ -93,7 +93,8 @@ def iris_algo(job_details):
     print('Average PetalWidthCm:', avg_PetalWidth)
 
     """ Print that number to output to generate algo output"""
-    with open("/Users/itschris/Desktop/Pontus-X/repo/PETS-marketplace-adv/data/outputs/result", "w") as f:
+    # with open("/Users/itschris/Desktop/Pontus-X/repo/PETS-marketplace-adv/data/outputs/result", "w") as f:
+    with open("data/outputs/result", "w") as f:
         result = {
             'non_blank_lines': non_blank_count,
             'avg_SepalLength': avg_SepalLength,
