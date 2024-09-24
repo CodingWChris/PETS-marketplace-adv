@@ -8,8 +8,6 @@ import json
 
 
 def get_job_details():
-    root = os.getenv('ROOT_FOLDER', '')
-    print('ROOT_FOLDER:', root)
     """Reads in metadata information about assets used by the algo"""
     job = dict()
     job['dids'] = json.loads(os.getenv('DIDS', None))
@@ -20,18 +18,27 @@ def get_job_details():
     algo_did = os.getenv('TRANSFORMATION_DID', None)
     if job['dids'] is not None:
         for did in job['dids']:
-            job['files'][did] = list()
-            # local path to the file
-            # Just one file for DID with name in the last ''  -> in this case "BTC_trend.json"
-            job['files'][did].append(root + '/data/inputs/' + did + '/iris.csv')
+            # get the ddo from disk
+            filename = '/data/ddos/' + did
+            print(f'Reading json from {filename}')
+            with open(filename) as json_file:
+                ddo = json.load(json_file)
+                # search for metadata service
+                for service in ddo['service']:
+                    if service['type'] == 'metadata':
+                        job['files'][did] = list()
+                        index = 0
+                        for file in service['attributes']['main']['files']:
+                            job['files'][did].append(
+                                '/data/inputs/' + did + '/' + str(index))
+                            index = index + 1
     if algo_did is not None:
         job['algo']['did'] = algo_did
-        job['algo']['ddo_path'] = root + '/data/ddos/' + algo_did
+        job['algo']['ddo_path'] = '/data/ddos/' + algo_did
     return job
 
-
-
 # def get_job_details():
+#     root = os.getenv('ROOT_FOLDER', '')
 #     """Reads in metadata information about assets used by the algo"""
 #     job = dict()
 #     job['dids'] = json.loads(os.getenv('DIDS', None))
@@ -43,7 +50,7 @@ def get_job_details():
 #     if job['dids'] is not None:
 #         for did in job['dids']:
 #             # get the ddo from disk
-#             filename = '/data/ddos/' + did
+#             filename = root + '/data/ddos/' + did
 #             print(f'Reading json from {filename}')
 #             with open(filename) as json_file:
 #                 ddo = json.load(json_file)
@@ -54,15 +61,17 @@ def get_job_details():
 #                         index = 0
 #                         for file in service['attributes']['main']['files']:
 #                             job['files'][did].append(
-#                                 '/data/inputs/' + did + '/' + str(index))
+#                                 root + '/data/inputs/' + did + '/' + str(index))
 #                             index = index + 1
 #     if algo_did is not None:
 #         job['algo']['did'] = algo_did
-#         job['algo']['ddo_path'] = '/data/ddos/' + algo_did
+#         job['algo']['ddo_path'] = root + '/data/ddos/' + algo_did
 #     return job
 
 
+
 def iris_algo(job_details):
+    root = os.getenv('ROOT_FOLDER', '')
     """Executes the line counter based on inputs"""
     print('Starting compute job with the following input information:')
     print(json.dumps(job_details, sort_keys=True, indent=4))
@@ -98,7 +107,6 @@ def iris_algo(job_details):
             print(f'Number of categories in {column}: {result[f"num_categories_{column}"]}')
 
 
-    root = os.getenv('ROOT_FOLDER', '')
     f = open(root + "/data/outputs/result", "w")
     for key, value in result.items():
         f.write(f'{key}: {value}\n')
