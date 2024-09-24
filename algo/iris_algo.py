@@ -99,9 +99,10 @@ def iris_algo(job_details):
 
 
     root = os.getenv('ROOT_FOLDER', '')
-    with open(root+ "/data/outputs/result", "w") as f:
-        for key, value in result.items():
-            f.write(f'{key}: {value}\n')
+    f = open(root + "/data/outputs/result", "w")
+    for key, value in result.items():
+        f.write(f'{key}: {value}\n')
+    f.close()
 
 
     # """ Calculate average of numeric column """
