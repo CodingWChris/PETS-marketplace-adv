@@ -6,6 +6,31 @@ import os
 import time
 import json
 
+
+# def get_job_details():
+#     root = os.getenv('ROOT_FOLDER', '')
+#     print('ROOT_FOLDER:', root)
+#     """Reads in metadata information about assets used by the algo"""
+#     job = dict()
+#     job['dids'] = json.loads(os.getenv('DIDS', None))
+#     job['metadata'] = dict()
+#     job['files'] = dict()
+#     job['algo'] = dict()
+#     job['secret'] = os.getenv('secret', None)
+#     algo_did = os.getenv('TRANSFORMATION_DID', None)
+#     if job['dids'] is not None:
+#         for did in job['dids']:
+#             job['files'][did] = list()
+#             # local path to the file
+#             # Just one file for DID with name in the last ''  -> in this case "BTC_trend.json"
+#             job['files'][did].append(root + '/data/inputs/' + did + '/iris.csv')
+#     if algo_did is not None:
+#         job['algo']['did'] = algo_did
+#         job['algo']['ddo_path'] = root + '/data/ddos/' + algo_did
+#     return job
+
+
+
 def get_job_details():
     """Reads in metadata information about assets used by the algo"""
     job = dict()
@@ -36,28 +61,6 @@ def get_job_details():
         job['algo']['ddo_path'] = '/data/ddos/' + algo_did
     return job
 
-# def get_job_details():
-#     root = os.getenv('ROOT_FOLDER', '')
-#     print('ROOT_FOLDER:', root)
-#     """Reads in metadata information about assets used by the algo"""
-#     job = dict()
-#     job['dids'] = json.loads(os.getenv('DIDS', None))
-#     job['metadata'] = dict()
-#     job['files'] = dict()
-#     job['algo'] = dict()
-#     job['secret'] = os.getenv('secret', None)
-#     algo_did = os.getenv('TRANSFORMATION_DID', None)
-#     if job['dids'] is not None:
-#         for did in job['dids']:
-#             job['files'][did] = list()
-#             # local path to the file
-#             # Just one file for DID with name in the last ''  -> in this case "BTC_trend.json"
-#             job['files'][did].append(root + '/data/inputs/' + did + '/iris.csv')
-#     if algo_did is not None:
-#         job['algo']['did'] = algo_did
-#         job['algo']['ddo_path'] = root + '/data/ddos/' + algo_did
-#     return job
-
 
 def iris_algo(job_details):
     """Executes the line counter based on inputs"""
@@ -78,30 +81,49 @@ def iris_algo(job_details):
                 non_blank_count += 1
     print ('number of non-blank lines found %d' % non_blank_count)
 
-    # Read JSON data into DataFrame
+    # Read csv data into DataFrame
     df = pd.read_csv(filename)
-    
-    """ Calculate average of numeric column """
-    avg_SepalLength = df['SepalLengthCm'].mean() if 'SepalLengthCm' in df.columns else None
-    avg_SepalWidth = df['SepalWidthCm'].mean() if 'SepalWidthCm' in df.columns else None
-    avg_PetalLength = df['PetalLengthCm'].mean() if 'SepalWidthCm' in df.columns else None
-    avg_PetalWidth = df['PetalWidthCm'].mean() if 'PetalWidthCm' in df.columns else None
 
-    print('Average SepalLengthCm:', avg_SepalLength)
-    print('Average SepalWidthCm:', avg_SepalWidth)
-    print('Average PetalLengthCm:', avg_PetalLength)
-    print('Average PetalWidthCm:', avg_PetalWidth)
+    result = {}
 
-    """ Print that number to output to generate algo output"""
-    # with open("/Users/itschris/Desktop/Pontus-X/repo/PETS-marketplace-adv/data/outputs/result", "w") as f:
-    with open("data/outputs/result", "w") as f:
-        result = {
-            'non_blank_lines': non_blank_count,
-            'avg_SepalLength': avg_SepalLength,
-            'avg_SepalWidth': avg_SepalWidth,
-            'avg_PetalLength': avg_PetalLength,
-        }
-        f.write(json.dumps(result, indent=4))
+    for column in df.columns:
+        if pd.api.types.is_numeric_dtype(df[column]):
+            # If the column is numeric, calculate the average
+            result[f'avg_{column}'] = df[column].mean()
+            print(f'Average {column}: {result[f"avg_{column}"]}')
+
+        else:
+            # If the column is categorical, count the number of unique categories
+            result[f'num_categories_{column}'] = df[column].nunique()
+            print(f'Number of categories in {column}: {result[f"num_categories_{column}"]}')
+
+    with open("/data/outputs/result", "w") as f:
+        for key, value in result.items():
+            f.write(f'{key}: {value}\n')
+
+
+
+    # """ Calculate average of numeric column """
+    # avg_SepalLength = df['SepalLengthCm'].mean() if 'SepalLengthCm' in df.columns else None
+    # avg_SepalWidth = df['SepalWidthCm'].mean() if 'SepalWidthCm' in df.columns else None
+    # avg_PetalLength = df['PetalLengthCm'].mean() if 'SepalWidthCm' in df.columns else None
+    # avg_PetalWidth = df['PetalWidthCm'].mean() if 'PetalWidthCm' in df.columns else None
+
+    # print('Average SepalLengthCm:', avg_SepalLength)
+    # print('Average SepalWidthCm:', avg_SepalWidth)
+    # print('Average PetalLengthCm:', avg_PetalLength)
+    # print('Average PetalWidthCm:', avg_PetalWidth)
+
+    # """ Print that number to output to generate algo output"""
+    # # with open("/Users/itschris/Desktop/Pontus-X/repo/PETS-marketplace-adv/data/outputs/result", "w") as f:
+    # with open("data/outputs/result", "w") as f:
+    #     result = {
+    #         'non_blank_lines': non_blank_count,
+    #         'avg_SepalLength': avg_SepalLength,
+    #         'avg_SepalWidth': avg_SepalWidth,
+    #         'avg_PetalLength': avg_PetalLength,
+    #     }
+    #     f.write(json.dumps(result, indent=4))
 
 if __name__ == '__main__':
     iris_algo(get_job_details())
