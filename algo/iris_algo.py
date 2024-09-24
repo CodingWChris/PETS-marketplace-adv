@@ -97,7 +97,9 @@ def iris_algo(job_details):
             result[f'num_categories_{column}'] = df[column].nunique()
             print(f'Number of categories in {column}: {result[f"num_categories_{column}"]}')
 
-    with open("/data/outputs/result", "w") as f:
+
+    root = os.getenv('ROOT_FOLDER', '')
+    with open(root+ "/data/outputs/result", "w") as f:
         for key, value in result.items():
             f.write(f'{key}: {value}\n')
 
