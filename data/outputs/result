@@ -1,6 +1,6 @@
-avg_Id: 75.5
-avg_SepalLengthCm: 5.843333333333334
-avg_SepalWidthCm: 3.0540000000000003
-avg_PetalLengthCm: 3.758666666666666
-avg_PetalWidthCm: 1.1986666666666668
-num_categories_Species: 3
+{
+    "non_blank_lines": 151,
+    "avg_SepalLength": 5.843333333333334,
+    "avg_SepalWidth": 3.0540000000000003,
+    "avg_PetalLength": 3.758666666666666
+}
