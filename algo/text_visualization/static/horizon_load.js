@@ -95,7 +95,7 @@ var horizons_load = function(){
             .attr("text-anchor", "middle")
             .style("pointer-events", "none")
             .attr("x", width/2)
-            .attr("y", height);
+            .attr("y", height/2);
 
         });
     }
