@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis Visualization Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Text Analysis Visualization Hub</h1>
+            <p>Interactive analysis developed by ClioX </p>
+        </div>
+        
+        <div class="grid-container">
+            <div class="tool-container">
+                <h2>📊 Word Cloud</h2>
+                <iframe id="cirrus-frame" src="http://localhost:8888/tool/Cirrus/?corpus={{ corpus }}"></iframe>
+            </div>
+
+            <div class="tool-container">
+                <h2>📈 Word Trends</h2>
+                <iframe id="http://localhost:8888/tool/Trends/?corpus={{ corpus }}" src=""></iframe>
+            </div>
+
+            <div class="tool-container full-width">
+                <h2>📝 Document Summary</h2>
+                <iframe id="summary-frame" src="http://localhost:8888/tool/Summary/?corpus={{ corpus }}"></iframe>
+            </div>
+
+            <div class="tool-container full-width">
+                <h2>🔗 Word Connections</h2>
+                <iframe id="collocates-frame" src="http://localhost:8888/tool/CorpusCollocates/?corpus={{ corpus }}"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+    <script>
+        // Inject the Python text variable into JavaScript
+        // const textFromPython = JSON.parse('{{ text|tojson }}');
+        // console.log('Text received from Python:', textFromPython);
+
+        // Now you can call your function to process this text in JavaScript
+        // fetchVoyantData(textFromPython);
+    </script>
+</body>
+</html>

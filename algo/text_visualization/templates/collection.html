@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Visualizing sentiment trends over time">
+    <meta name="author" content="nc">
+
+    <title>Sentiment Exploration</title>
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+
+
+    <!-- CUSTOM CSS -->
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Page Content -->
+    <div id="collections-home" class="collections-home">
+        <div class="container-fluid">   
+            <div id="summary">
+                <h2 id="col-title" ></h2>
+            </div>
+
+            <div id="spark-table"></div>  
+            <div id="events-legend"></div>
+                    
+            
+
+            <div id="vis-sentiment">
+                <div  id="vis-sentiment-lines"></div>
+                <div  id="vis-horizon"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src = "{{ url_for('static', filename='d3.v3.min.js') }}"></script>
+    <script src= "{{ url_for('static', filename='horizon_load.js') }}"></script>
+    <script src= "{{ url_for('static', filename='sentiment_plot.js') }}"></script>
+    <script src= "{{ url_for('static', filename='horizon.js') }}"></script>
+    <script src= "{{ url_for('static', filename='colorbrewer.js') }}"></script>
+
+    
+
+    <script>
+
+        var colname = getUrlVars()["col"];
+        var dir = "static/";
+
+
+        var word_lines_func;
+        var summary_lines_func;
+
+       
+        function events_listener(){
+            toggle_elem('events-legend');
+            summary_lines_func.update_events();
+        }
+
+        //summary Chart
+        d3.csv('collections.csv', function(csv) {
+
+            csv.forEach(function(d) {
+                d.num_tweets = +d.num_tweets;
+                d.positive_avg = +d.positive_avg;
+                d.negative_avg = +d.negative_avg;
+            });
+
+            d3.select("#spark-table")
+                .append("svg")
+                .attr("class", "svg-spark")
+                .attr("id", "num-tweets")
+                .attr("width", 500)
+                .attr("height", 60)
+                .data([csv]);
+
+            
+            d3.select("#vis-sentiment-lines")
+                .append("svg")
+                .attr("class", "svg-spark")
+                .attr("id", "senti-avg")
+                .attr("width", 500)
+                .attr("height", 60)
+                .data([csv]);
+
+            var senti_summary = summary_plot()
+                .names(["positive_avg", "negative_avg"])
+                .colors(["#fd8d3c", "#6baed6"])
+                .chart_title("Sentiment Average")
+                .axis_flag(true);
+               
+            d3.select("#senti-avg").call(senti_summary);
+        });
+
+       
+        
+        //horizon Chart
+        hchart = horizons_load();
+        d3.select("#vis-horizon").call(hchart);
+
+        //Tweets!
+        // d3.csv(dir+"tweets.csv", function(csv){
+        //    tweets_data=d3.nest()
+        //         .key(function(d) {return "myTweets";})
+        //         .entries(csv);
+
+        //    $('#table').bootstrapTable({
+        //         data: tweets_data[0].values
+        //     }); 
+        // });
+
+        //WordCloud
+        // d3.json(dir+'cloud.json', function(json) {
+            
+        //     var cloud = matta_wordcloud ()
+        //         .width(480)
+        //         .height(300)
+        //         .max_font_size(48)
+        //         .font_scale(0.25)
+        //         .typeface("Open Sans")
+        //         .wff_listener(cloud_listener);
+        //     d3.select('#vis-cloud').datum({items: json}).call(cloud);
+        // });
+
+        //Word Use Line Chart
+        // d3.csv(dir+'word_frequency.csv', function(csv) {
+
+        //     wf_data = csv;
+
+        //     var def = csv[1].word;
+        //     var obj = csv.find(function(elem){
+        //         if(elem.word == def) {return true;}
+        //     });
+
+        //     data = formatWordData(obj);
+
+        //     d3.select("#vis-word-lines")
+        //         .append("svg")
+        //         .attr("class", "svg-spark")
+        //         .attr("id", "word-lines")
+        //         .attr("width", 500)
+        //         .attr("height", 60)
+        //         .data([data]);
+
+        //     word_lines_func = wff_summary_lines()
+        //         .names(["count"])
+        //         .chart_title("No. of Tweets: "+ def)
+        //         .axis_flag(true);
+
+        //     d3.select("#word-lines").call(word_lines_func);
+        // });
+
+
+        /* MISCELANEOUS
+        ============================
+        */
+        function getPrintableDate(txt){
+            d = new Date(txt);
+            return d.getUTCFullYear()+"-"+(d.getUTCMonth()+1)+"-"+d.getUTCDate();
+        }
+
+        
+        function toggle_visibility(show, hide) {
+           var s = document.getElementById(show);
+           var h = document.getElementById(hide);
+           //if(e.style.display == 'block'){
+              h.style.display = 'none';
+              h.style.visibility = 'hidden';
+           //}
+           //else{
+              s.style.display = 'block';
+              s.style.visibility = 'visible';
+          //}
+        
+        } 
+
+        function toggle_elem(elem){
+            var e = document.getElementById(elem);
+            if(e.style.display == 'block'){
+                e.style.display = 'none';
+                e.style.visibility = 'hidden';
+            } else{
+                e.style.display = 'block';
+                e.style.visibility = 'visible';
+            }
+        }
+
+        /*function queryParams() {
+
+            var txt = $('.form-control').val();
+            console.log(txt);
+            return {
+                type: 'owner',
+                sort: 'updated',
+                direction: 'desc',
+                per_page: 25,
+                page: 1,
+                search:txt
+            };
+        }*/
+
+        function formatWordData(obj){
+            data = Array();
+            for (prop in obj){
+                if(prop!="word"){
+                    var r = {};
+                    r["date"] = prop;
+                    r["count"] = +obj[prop];
+                    data.push(r);   
+                }
+            }
+
+            data.sort(function (a, b) {
+              if (a.date > b.date) {
+                return 1;
+              }
+              if (a.date < b.date) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+            });
+
+            return data;
+        }
+
+        function cloud_search(txt){
+            $('.form-control').val(txt);
+            $table = $('#table');
+            $table.bootstrapTable('refresh', {query:{search: txt}});
+        }
+
+
+        function responseHandler(res) {
+            return res.rows;
+        }
+
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+
+    </script>
+
+</body>
+
+</html>
