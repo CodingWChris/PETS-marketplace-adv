@@ -1,8 +1,26 @@
 var horizons_load = function(){ 
     //variables accessible to the rest of the functions inside SmallMultiples
-    width = 500;
-    height = 300;
-    band_height = 25;
+    
+    // width = 500;
+    // height = 300;
+    // band_height = 25;
+    // hmargin = {
+    //   top: 2
+    // };
+
+
+    var windowWidth = window.innerWidth;
+    var marginPercent = 0.05; // 5% margin
+    var margin = {
+      left: Math.floor(windowWidth * marginPercent), 
+      right: Math.floor(windowWidth * marginPercent)
+    }; 
+    
+    // Limit width and add margins - at most 80% of window width
+    width = Math.min(windowWidth * 0.8, windowWidth - margin.left - margin.right); 
+    
+    height = window.innerHeight;
+    band_height = 100; // height of each band
     hmargin = {
       top: 2
     };
@@ -11,16 +29,19 @@ var horizons_load = function(){
       .width(width)
       .height(band_height)
       .mode("offset")
-      .interpolate("basis");
+      .interpolate("basis")
+      ;
       
     
     func_horizonchart = function init(selection){  
 
         var svg = selection.append("svg")
           .attr("width", width )
-          .attr("height", height);
+          .attr("height", height)
+          .style("margin", "0 auto")
+          .style("display", "block");;
 
-        d3.json(dir+"sentiment.json", function(error, data) {
+        d3.json(dir+"sentiment_converted.json", function(error, data) {
 
           min=Infinity;
           max=0;
@@ -66,6 +87,7 @@ var horizons_load = function(){
             });
           g.call(chart);
 
+          // showing the date   
           svg.append("text")
             .text("date")
             .attr("id", "date-caption")

@@ -6,12 +6,12 @@
         defined,
         x = d3_horizonX,
         y = d3_horizonY,
-        width = 960,
-        height = 30,
+        width = window.innerWidth -50,
+        height = window.innerHeight,
         maxY = 250,
         maxBands=5;
 
-        //title = 'my category';
+    //title = 'my category';
     neg = colorbrewer.Blues[maxBands+2];
     pos = colorbrewer.Oranges[maxBands+2];   
     neutral =  colorbrewer.Greys[maxBands+2];
@@ -230,9 +230,10 @@
           .orient("bottom")
           .ticks(8);
       
+      // Adding the x-axis
       parent.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" +[0, 15+(height+2)*9] + ")")
+        .attr("transform", "translate(" +[0, (height+2)*6] + ")")
         .call(xAxis);
               
     } //end-horizon

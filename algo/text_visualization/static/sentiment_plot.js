@@ -1,4 +1,4 @@
-var sentiment_plot = function(){    
+var sentiment_load = function(){    
     
     var svg;
 
