@@ -23,25 +23,30 @@
                 <h2> Data distribution on Date </h2>
                 <img src="{{ url_for('static', filename='outputs/date_distribution.png') }}">
             </div>
-
-            <div class="tool-container full-width">
-                <h2>📊 Word Cloud</h2>
-                <iframe id="cirrus-frame" src="http://localhost:8888/tool/Cirrus/?corpus={{ corpus }}"></iframe>
-            </div>
-
-            <div class="tool-container full-width">
-                <h2>📝 Document Summary</h2>
-                <iframe id="summary-frame" src="http://localhost:8888/tool/Summary/?corpus={{ corpus }}"></iframe>
-            </div>
-            
-            <div class="tool-container full-width">
-                <h2>📈 Sentiment Analysis</h2>
-                <div id="vis-sentiment">
-                    <div  id="vis-sentiment-lines"></div>
-                    <div  id="vis-horizon"></div>
-                </div>
-            </div>
         </div>
+
+        <div class="tool-container full-width">
+            <h2>📊 Word Cloud</h2>
+            <iframe id="cirrus-frame" src="http://localhost:8888/tool/Cirrus/?corpus={{ corpus }}"></iframe>
+        </div>
+
+        <div class="tool-container full-width">
+            <h2>📝 Document Summary</h2>
+            <iframe id="summary-frame" src="http://localhost:8888/tool/Summary/?corpus={{ corpus }}"></iframe>
+        </div>
+        
+        <div class="tool-container full-width">
+            <h2>📈 Sentiment Analysis</h2>
+            <div id="vis-sentiment">
+                <div  id="vis-sentiment-lines"></div>
+                <div  id="vis-horizon"></div>
+            </div>
+
+        </div>
+            <h2>Further more ... </h2>
+        <div>
+
+            
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

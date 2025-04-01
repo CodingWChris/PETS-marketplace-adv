@@ -7,17 +7,43 @@ var horizons_load = function(){
     // hmargin = {
     //   top: 2
     // };
-
-
-    var windowWidth = window.innerWidth;
-    var marginPercent = 0.05; // 5% margin
-    var margin = {
-      left: Math.floor(windowWidth * marginPercent), 
-      right: Math.floor(windowWidth * marginPercent)
-    }; 
     
-    // Limit width and add margins - at most 80% of window width
-    width = Math.min(windowWidth * 0.8, windowWidth - margin.left - margin.right); 
+    // set the width of the chart to be 0% of the father container width 
+    function getContainerWidth() {
+      var container = document.getElementById('vis-horizon');
+      if (container) {
+          var parentWidth = container.parentNode.clientWidth;
+          // Account for padding (40px total from both sides)
+          return parentWidth - 40;
+      }
+      return Math.min(800, window.innerWidth * 0.95);
+  }
+
+    // Calculate dimensions based on container
+    var availableWidth = getContainerWidth();
+
+    // Set margins as a percentage of available width
+    var marginPercent = 0.03; // 3% margin
+    var margin = {
+        left: Math.floor(availableWidth * marginPercent),
+        right: Math.floor(availableWidth * marginPercent)
+    };
+
+    // Width is container width minus margins
+    width = availableWidth - margin.left - margin.right;
+
+    // END
+
+
+    // var windowWidth = window.innerWidth;
+    // var marginPercent = 0.05; // 5% margin
+    // var margin = {
+    //   left: Math.floor(windowWidth * marginPercent), 
+    //   right: Math.floor(windowWidth * marginPercent)
+    // }; 
+    
+    // // Limit width and add margins - at most 80% of window width
+    // width = Math.min(windowWidth * 0.8, windowWidth - margin.left - margin.right); 
     
     height = window.innerHeight;
     band_height = 100; // height of each band
