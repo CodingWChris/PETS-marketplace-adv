@@ -48,7 +48,6 @@ def extract(text):
     }
 
 
-
 def nlp(text):
     """Clean and tokenize text"""
     # Remove HTML tags
@@ -209,20 +208,17 @@ if __name__ == "__main__":
     # skip first line for better visualization
     plot_df = aggregate_df[1:]
     
-    # save the data in json format
-    plot_df.to_json('outputs/sentiment_analysis.json')
-    plot_df.to_csv('outputs/sentiment_analysis.csv', index=True)
-
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")  # Coerce invalid values to NaT
+    plot_df = plot_df.reset_index()
+    plot_df["date"] = pd.to_datetime(plot_df["date"], errors="coerce")  # Coerce invalid values to NaT
 
     # Drop any row where date conversion failed
-    df = df.dropna(subset=["date"])
+    plot_df = plot_df.dropna(subset=["date"])
 
     # Convert dates to day-level granularity (YYYY-MM-DD)
-    df["date"] = df["date"].dt.date
+    plot_df["date"] = plot_df["date"].dt.date
 
     # Group by day and sum values
-    grouped = df.groupby("date").sum().reset_index()
+    grouped = plot_df.groupby("date").sum().reset_index()
 
     # Convert to required JSON format
     output = []
@@ -265,7 +261,7 @@ if __name__ == "__main__":
     def index():
         return render_template("index.html", corpus = corpus)
 
-    app.run(port=5001, debug=True)
+    app.run(port=5001, debug=False)
 
     
 

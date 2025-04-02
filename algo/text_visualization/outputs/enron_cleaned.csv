@@ -20441,7 +20441,7 @@ possible to show me indications on the quotes I asked for?  Please advise.
 <PERSON>, Gas Trading
 ACN Power, Inc.
 <DATE_TIME> Jones Branch Drive, Suite 630
-McLean, VA <US_SSN>
+McLean, VA <IN_PAN>
 Phone  <PHONE_NUMBER>
 Fax  <PHONE_NUMBER>
 Cell <PHONE_NUMBER>
@@ -20579,7 +20579,7 @@ possible to show me indications on the quotes I asked for?  Please advise.
 <PERSON>, Gas Trading
 ACN Power, Inc.
 <DATE_TIME> Jones Branch Drive, Suite 630
-McLean, VA <US_SSN>
+McLean, VA <IN_PAN>
 Phone  <PHONE_NUMBER>
 Fax  <PHONE_NUMBER>
 Cell <PHONE_NUMBER>
@@ -26525,7 +26525,7 @@ Phillip",phillip.allen@enron.com,jsmith@austintx.com,"Mon, 16 Apr 2001 03:34:00 
 
 Central Insurance Agency, Inc
 <PERSON>, <PERSON> 15427
-<PERSON>, TX <IN_PAN>
+<PERSON>, TX <US_SSN>
 
 Policy #<PERSON>
 
@@ -32213,7 +32213,7 @@ E-Mail? <EMAIL_ADDRESS>
 
 1400 Smith Street
 
-<LOCATION>, TX? <US_SSN>
+<LOCATION>, TX? <IN_PAN>
 
 Subject: Bishops Corner, Ltd. -- Restructure or Buyout
 
@@ -34348,7 +34348,7 @@ Phillip",phillip.allen@enron.com,jsmith@austintx.com,"Mon, 16 Apr 2001 13:34:00 
 
 Central Insurance Agency, Inc
 <PERSON>, <PERSON> 15427
-<PERSON>, TX <IN_PAN>
+<PERSON>, TX <US_SSN>
 
 Policy #<PERSON>
 
@@ -74951,7 +74951,7 @@ possible to show me indications on the quotes I asked for?  Please advise.
 <PERSON>, Gas Trading
 ACN Power, Inc.
 <DATE_TIME> Jones Branch Drive, Suite 630
-McLean, VA <US_SSN>
+McLean, VA <IN_PAN>
 Phone  <PHONE_NUMBER>
 Fax  <PHONE_NUMBER>
 Cell <PHONE_NUMBER>
@@ -75160,7 +75160,7 @@ possible to show me indications on the quotes I asked for?  Please advise.
 <PERSON>, Gas Trading
 ACN Power, Inc.
 <DATE_TIME> Jones Branch Drive, Suite 630
-McLean, VA <US_SSN>
+McLean, VA <IN_PAN>
 Phone  <PHONE_NUMBER>
 Fax  <PHONE_NUMBER>
 Cell <PHONE_NUMBER>
@@ -87818,7 +87818,7 @@ Phillip",phillip.allen@enron.com,jsmith@austintx.com,"Mon, 16 Apr 2001 03:34:00 
 
 Central Insurance Agency, Inc
 <PERSON>, <PERSON> 15427
-<PERSON>, TX <IN_PAN>
+<PERSON>, TX <US_SSN>
 
 Policy #<PERSON>
 
