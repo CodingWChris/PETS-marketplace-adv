@@ -211,9 +211,9 @@
         .attr("x", margin.left)
         .attr("fill", "none")
         .style("pointer-events", "all")
-                .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
-                .on("mouseout", mouseout); 
+                .on("mouseover", mouseover) // triggerd when mouse enters the rect
+                .on("mousemove", mousemove) // triggered when mouse moves within the rect
+                .on("mouseout", mouseout); // triggered when mouse leaves the rect
 
 
         // Stash the new scales.
@@ -294,9 +294,8 @@
       return horizon;
     };
 
-    /** ---
-    Called when viewer interacts with xAxis
-    */
+    // mouseevents handlers
+
     mouseover = function() {
       caption = d3.selectAll(".caption");
       dateCaption = d3.select("#date-caption");

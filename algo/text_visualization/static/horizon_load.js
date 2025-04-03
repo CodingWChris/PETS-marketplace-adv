@@ -8,9 +8,9 @@ var horizons_load = function(){
     //   top: 2
     // };
     
-    // set the width of the chart to be 0% of the father container width 
+    // set the width of the chart to be % of the father container width 
     function getContainerWidth() {
-      var container = document.getElementById('vis-horizon');
+      var container = document.getElementById('vis-horizon'); // 'vis-horizon' inherents the width of the father container 'full-width' 
       if (container) {
           var parentWidth = container.parentNode.clientWidth;
           // Account for padding (40px total from both sides)
@@ -32,7 +32,6 @@ var horizons_load = function(){
     // Width is container width minus margins
     width = availableWidth - margin.left - margin.right;
 
-    // END
 
 
     // var windowWidth = window.innerWidth;
@@ -120,7 +119,7 @@ var horizons_load = function(){
             .attr("class", "bold-legend")
             .attr("text-anchor", "middle")
             .style("pointer-events", "none")
-            .attr("x", width/2)
+            .attr("x", width*0.7)
             .attr("y", height/2);
 
         });
