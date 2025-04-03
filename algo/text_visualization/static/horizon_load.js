@@ -70,9 +70,11 @@ var horizons_load = function(){
 
           min=Infinity;
           max=0;
+
+          // TODO: change it to make the value have addtional information: list of words 
           data.forEach(function(d,i){
-              var list = d.values.map(function(c){
-                return c[1];
+              var list = d.values.map(function(c){ 
+                return c[1];   // [category name , date and counts] -> get date and counts
               });            
               var val = d3.extent(list);
               if(val[0]<min){min =val[0];}
@@ -104,6 +106,7 @@ var horizons_load = function(){
             .style("text-anchor", "end")
             .attr("x", width-25);
           
+          // Adding the data points 
           g.enter()
             .append("g")
             .attr("class", "h-group")
@@ -123,6 +126,8 @@ var horizons_load = function(){
             .attr("y", height/2);
 
         });
+
+        // TODO: add a function to update the table showing the words in the selected band
     }
 
     return func_horizonchart;

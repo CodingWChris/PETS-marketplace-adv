@@ -38,6 +38,7 @@
     xScale = d3.time.scale.utc();
 
     // these will be set to d3 selections later
+    // TODO: add a variable to store the words list 
     caption = null
     dateCaption = null
     line = null;
@@ -142,7 +143,6 @@
             .attr("x", margin.left );
                      
           
-
         d3.transition(defs.select("rect"))
             .attr("width", (width  - margin.left ))
             .attr("height", height)
@@ -294,7 +294,11 @@
       return horizon;
     };
 
-    // mouseevents handlers
+    // *************************
+    // mouseevents handlers    *
+    // *************************
+
+    // TODO: fit the list of words variable in to show the top n imapact words 
 
     mouseover = function() {
       caption = d3.selectAll(".caption");
@@ -303,41 +307,47 @@
       line.attr("opacity", 1.0);
       return mousemove.call(this);
     };
+
+
     mousemove = function() {
       var date, index;
-      xx = Math.round(d3.mouse(this)[0]);
-      date = xScale.invert(xx);
+      xx = Math.round(d3.mouse(this)[0]); // x position of the mouse
+      date = xScale.invert(xx); // Convert x-coordinate to a date using the xScale
 
       // Get any group and find the date index in the array
       // I am assuming all bands have same dates
       d3.select(".h-group")
         .each(function(c){
 
-          //Rough... pointer date is an indicator of starting point
-          index= bisect(c.values, date)-1;
+          index= bisect(c.values, date)-1;  // Find index of the closest date
           if (index<0){index=0;}
 
           //updating the date to the data point
           date = formatDate(c.values[index][0]);
         });
-
+      
+      // Update the caption text and position  
       caption
         .attr("x", xx)
         .attr("y", function(c) {
             return height/2;
         })
         .text(function(c) {
-          return c.values[index][1];
+          return c.values[index][1]; // Display the corresponding value
         });
-
+      
+      // Update the line position
       line
         .attr("x1", xx)
         .attr("x2", xx);
-
+      
+        // Update the date caption
       dateCaption.text(myStringDate(date) );
         
       
     };
+
+    // hide the caption and line when the mouse leaves the rect
     mouseout = function() {
       line.attr("opacity", 0);
       dateCaption.text("");
