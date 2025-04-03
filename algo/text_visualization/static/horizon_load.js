@@ -66,6 +66,52 @@ var horizons_load = function(){
           .style("margin", "0 auto")
           .style("display", "block");;
 
+
+        // INSERT
+        var tableContainer = d3.select("#words-table-container")
+          .attr("class", "words-table-container")
+          .style("width", width + "px")
+          .style("margin", "20px auto")
+          .style("max-height", "300px")
+          .style("overflow-y", "auto")
+          .style("border", "1px solid #eee")
+          .style("border-radius", "5px")
+          .style("padding", "10px")
+          .style("display", "none")
+          // .style("opacity", "0")  // intially hidden
+          // .style("transition", "opacity 0.3s ease"); // fade-in effect
+
+        // table title
+        tableContainer.append("h3")
+          .text("Contributing Words by Sentiment Category")
+          .style("margin", "0 0 10px 0")
+          .style("text-align", "center");
+
+        // create a table element
+        var table = tableContainer.append("table")
+          .attr("class", "words-table")
+          .style("width", "100%")
+          .style("border-collapse", "collapse")
+          .style("font-family", "Arial, sans-serif");
+
+        // add a header row
+        var thead = table.append("thead");
+        thead.append("tr")
+          .selectAll("th")
+          .data(["Sentiment Category", "Contributing Words"])
+          .enter()
+          .append("th")
+          .text(function(d) { return d; })
+          .style("padding", "8px")
+          .style("text-align", "left")
+          .style("border-bottom", "2px solid #ddd");
+
+        // add a body to the table
+        table.append("tbody")
+          .attr("id", "words-table-body");
+
+        // END INSERT
+
         d3.json(dir+"sentiment_converted.json", function(error, data) {
 
           min=Infinity;
@@ -79,6 +125,13 @@ var horizons_load = function(){
               var val = d3.extent(list);
               if(val[0]<min){min =val[0];}
               if(val[1]>max){max = val[1];}
+
+              // INSERT
+              if (!d.words) {
+                d.words = d.values.map(function(v) {
+                    return [v[0], []];
+                });
+              }
               //console.log(min, max, d.name, val);
           });
 

@@ -43,6 +43,11 @@
     dateCaption = null
     line = null;
 
+    // INSERT
+    wordsTable = null;
+
+    
+
     /* 
       d3.bisector creates a bisect function that can be used to search an array for a specific value. 
       We will use it later in mouseover.
@@ -305,6 +310,14 @@
       dateCaption = d3.select("#date-caption");
       line = d3.selectAll(".caption-line");
       line.attr("opacity", 1.0);
+
+      //INSERT
+      var tableContainer = d3.select("#words-table-container");
+      if (!tableContainer.empty()) {
+        // console.log("Showing table container");
+        tableContainer.style("display", "block");
+      }
+
       return mousemove.call(this);
     };
 
@@ -343,16 +356,117 @@
       
         // Update the date caption
       dateCaption.text(myStringDate(date) );
-        
-      
+       
+      // INSERT
+      updateWordsTable(index);
     };
 
     // hide the caption and line when the mouse leaves the rect
     mouseout = function() {
       line.attr("opacity", 0);
       dateCaption.text("");
+
+      // INSERT
+      clearWordsTable();
+      var tableContainer = d3.select("#words-table-container");
+      if (!tableContainer.empty()) {
+        // console.log("Hiding table container");
+        clearWordsTable();
+        tableContainer.style("display", "none");
+  }
+      // console.log("mouseout- should hide the table");
+      
       return caption.text("");
     };
+
+    // INSERT
+    function updateWordsTable(index) {
+      // retrieve the table body element
+      var tableBody = d3.select("#words-table-body");
+      if(tableBody.empty()) return; // do nothing if the table is not present
+      
+      // clear the existing table content
+      tableBody.html("");
+
+      // console.log("Updating table for index:", index);
+      
+      // collect all data for the current index
+      var allData = [];
+      d3.selectAll(".h-group").each(function(d) {
+        if (d && d.name && d.values && d.values.length > index) {
+          var value = d.values[index][1];
+          var words = [];
+          
+          // if words are available, get the words for the current index
+          if (d.words && d.words.length > index) {
+            words = d.words[index][1] || [];
+            // console.log("Words found:", words);
+          }
+          
+          // only add to the table if the value is greater than 0
+          if (value > 0) {
+            allData.push({
+              sentiment: d.name,
+              count: value,
+              words: words
+            });
+          }
+        }
+      });
+      
+      // create a new row for each data point
+      allData.forEach(function(d) {
+        var row = tableBody.append("tr");
+        
+        var sentimentCell = row.append("td");
+        
+        
+        var color;
+        if (d.sentiment.indexOf("+") !== -1) {
+          color = color_positive(d.sentiment.includes("+2") ? 1 : 2);
+        } else if (d.sentiment.indexOf("-") !== -1) {
+          color = color_negative(d.sentiment.includes("-2") ? 1 : 2);
+        } else {
+          color = neutral[3];
+        }
+        
+        // add a colored dot for sentiment
+        sentimentCell.append("span")
+          .attr("class", "sentiment-color-dot")
+          .style("display", "inline-block")
+          .style("width", "10px")
+          .style("height", "10px")
+          .style("border-radius", "50%")
+          .style("background-color", color)
+          .style("margin-right", "5px");
+        
+        // add human readable text tage and count
+        sentimentCell.append("span")
+          .text(getSentimentText(d.sentiment) + " (" + d.count + ")");
+        
+        // add the words
+        row.append("td")
+          .text(d.words.length > 0 ? d.words.join(", ") : "No contributing words");
+      });
+    }
+
+    function getSentimentText(sentiment) {
+      var sentimentMap = {
+        "-2": "Very Negative",
+        "-1": "Negative",
+        "0": "Neutral",
+        "+1": "Positive",
+        "+2": "Very Positive"
+      };
+      return sentimentMap[sentiment] || sentiment;
+    }
+
+    function clearWordsTable() {
+      var tableBody = d3.select("#words-table-body");
+      if(!tableBody.empty()) {
+        tableBody.html("");
+      }
+    }
 
     return d3.rebind(horizon, area, "interpolate", "basis");
   };
@@ -386,4 +500,5 @@
         ? function(d) { return "translate(0," + (d + (d < 0) - bands) * h + ")"; }
         : function(d) { return (d < 0 ? "scale(1,-1)" : "") + "translate(0," + (d - bands) * h + ")"; };
   }
+
 })();
